@@ -4,14 +4,30 @@ namespace abstract_class_account_task
 {
     internal class Group
     {
-        public string Groupno { get; set; }
+        string groupno;
+        public string Groupno
+        {
+            get => groupno;
+            set
+            {
+                if (CheckGroupNumber(value))
+                {
+                    groupno = value;
+                }
+                else
+                {
+                    Console.WriteLine("Please enter valid group numer. Example - AA000");
+                }
+            }
+
+        }
         int studentlimit;
         public int Studentlimit
         {
             get => studentlimit;
             set
             {
-                if (value >= 5 && value <= 18)
+                if (StudentLimitChecker(value))
                 {
 
                     studentlimit = value;
@@ -31,16 +47,29 @@ namespace abstract_class_account_task
 
         public bool CheckGroupNumber(string str)
         {
-            return Char.IsUpper(str[0]) && Char.IsLower(str[1]) && Char.IsDigit(str[2]) && Char.IsDigit(str[3]) && Char.IsDigit(str[4]);
+            if (str.Length != 5)
+            {
+                return false;
+            }
+            return Char.IsUpper(str[0]) && Char.IsUpper(str[1]) && Char.IsDigit(str[2]) && Char.IsDigit(str[3]) && Char.IsDigit(str[4]);
 
         }
 
-        public Student[] AddStudent( Student student)
+        public Group(string groupno, int studentLimit)
         {
-            // check length
+            Groupno = groupno;
+            Studentlimit = studentLimit;
+        }
+        public Student[] AddStudent(Student student)
+        {
+            if (students.Length > studentlimit)
+            {
+                return students;
+            }
+
             Array.Resize(ref students, students.Length + 1);
 
-            if(students.Length <=5)
+            if (students.Length <= studentlimit)
             {
                 students[students.Length - 1] = student;
             }
@@ -53,17 +82,28 @@ namespace abstract_class_account_task
         }
 
 
-        public Student GetStudents(Student searchedStudent, int id)
+        public  Student GetStudent(int id)
         {
-           foreach(Student student in students)
+            foreach (Student student in students)
             {
-                if (student.Id==id)
+                if (student.Id == id)
                 {
                     return student;
                 }
 
             }
             return null;
+        }
+
+        public bool StudentLimitChecker(int number)
+        {
+            return number >= 5 && number <= 18;
+
+        }
+
+        public Student[] GetAllStudents()
+        {
+            return students;
         }
     }
 }
