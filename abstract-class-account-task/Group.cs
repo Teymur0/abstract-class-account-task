@@ -45,7 +45,7 @@ namespace abstract_class_account_task
 
 
 
-        public bool CheckGroupNumber(string str)
+        public static bool CheckGroupNumber(string str)
         {
             if (str.Length != 5)
             {
@@ -95,7 +95,7 @@ namespace abstract_class_account_task
             return null;
         }
 
-        public bool StudentLimitChecker(int number)
+        public static bool StudentLimitChecker(int number)
         {
             return number >= 5 && number <= 18;
 

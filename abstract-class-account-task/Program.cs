@@ -35,7 +35,6 @@ namespace abstract_class_account_task
 
                 if (userCommand)
                 {
-                    Console.WriteLine("Enter command number: ");
                     switch (command)
                     {
 
@@ -44,19 +43,29 @@ namespace abstract_class_account_task
                             break;
 
                         case 2:
+                            enterValidGroupNumber:
                             Console.Write("Enter group number: ");
                             string grouNo = Console.ReadLine();
+                            if (!Group.CheckGroupNumber(grouNo))
+                            {
+                                Console.WriteLine("Enter valid group number");
+                                goto enterValidGroupNumber;
+                            }
+                            enterValidStudentLimit:
                             Console.Write("Enter student limit: ");
                             int studentLimit;
                             bool isValidLimit = int.TryParse(Console.ReadLine(), out studentLimit);
-                            if (!isValidLimit)
+                            if (!Group.StudentLimitChecker(studentLimit))
                             {
                                 Console.WriteLine("Enter number between 5 and 18");
-                                break;
+                               goto enterValidStudentLimit;
                             }
+                           
                             Group group = new(grouNo, studentLimit);
 
-                            if (group.CheckGroupNumber(grouNo) && group.StudentLimitChecker(studentLimit))
+
+
+                            if (Group.CheckGroupNumber(grouNo) && Group.StudentLimitChecker(studentLimit))
                             {
 
 
@@ -95,7 +104,8 @@ namespace abstract_class_account_task
                                             {
                                                 foreach (Student student in students)
                                                 {
-                                                    Console.WriteLine(student);
+                                                    Console.WriteLine(student.Fullname);
+                                                    Console.WriteLine(student.Point);
                                                 }
 
                                             }
@@ -107,6 +117,7 @@ namespace abstract_class_account_task
                                             break;
 
                                         case 2:
+                                           validStudentId:
                                             Console.Write("Enter student Id: ");
 
                                             int studentId;
@@ -116,13 +127,14 @@ namespace abstract_class_account_task
                                             if (!isValidStudentId)
                                             {
                                                 Console.WriteLine("Enter valid student id ");
-                                                break;
+                                                goto validStudentId;
                                             }
 
                                             Student searchedStudent = group.GetStudent(studentId);
                                             if (searchedStudent != null)
                                             {
-                                                searchedStudent.StudentInfo();
+                                                Console.WriteLine(searchedStudent.Fullname);
+                                                Console.WriteLine(searchedStudent.Point);
 
                                             }
                                             else
@@ -132,6 +144,7 @@ namespace abstract_class_account_task
                                             }
                                             break;
                                         case 3:
+                                            Console.Write("Enter student fullname: ");
                                             string studentFullName = Console.ReadLine();
                                             Console.Write("Enter student point: ");
                                             decimal studentPoint;
